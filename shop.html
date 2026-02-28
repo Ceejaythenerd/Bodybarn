@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop The Body Barn's collection of natural handcrafted bodycare products.">
+    <title>Shop | The Body Barn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #342525;
+            --brand-secondary: #89A37B;
+            --brand-bg: #E7E7E7;
+            --brand-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--brand-primary);
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            /* Fallback for 'Dream Avenue' */
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .accent-font {
+            /* Fallback for 'Six Hands Marker' */
+            font-family: 'Caveat', cursive;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 40;
+        }
+
+        .fab-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #scroll-top-btn {
+            background-color: var(--brand-primary);
+            color: var(--brand-white);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .whatsapp-btn {
+            background-color: var(--brand-secondary);
+            color: var(--brand-white);
+        }
+
+        #cart-drawer {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drawer-open #cart-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-closed #cart-drawer {
+            transform: translateX(100%);
+        }
+
+        #cart-overlay {
+            transition: opacity 0.4s ease;
+        }
+
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+
+        /* Filter styling */
+        .filter-checkbox:checked+label .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .check-icon {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body class="antialiased drawer-closed">
+
+    <!-- Floating Actions -->
+    <div class="fab-container">
+        <button id="scroll-top-btn" class="fab-btn" onclick="scrollToTop()" aria-label="Scroll to top">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path d="M5 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-30 bg-[#E7E7E7]/90 backdrop-blur-md border-b border-[#342525]/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-">
+            <div class="flex gap-8 items-center text-sm uppercase tracking-widest text-[#342525]/70 hidden md:flex">
+                <a href="index.html" class="hover:text-[#342525] font-medium transition-colors">Home</a>
+                <a href="shop.html"
+                    class="text-[#342525] font-semibold transition-colors border-b-2 border-[#89A37B] pb-1">Shop</a>
+                <a href="index.html#story" class="hover:text-[#342525] font-medium transition-colors">Story</a>
+            </div>
+            <div class="flex justify-center items-center">
+                <a href="index.html"><img src="assets/logo.png" alt="The Body Barn Logo"
+                        class="h-14 object-contain"></a>
+            </div>
+            <div class="flex items-center gap-6 text-[#342525]">
+                <button onclick="toggleCart()" aria-label="Toggle Cart Drawer"
+                    class="relative p-2 hover:bg-[#89A37B] hover:text-white rounded-full transition-colors">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                    <span id="cart-count"
+                        class="absolute top-0 right-0 bg-[#89A37B] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" aria-label="Toggle Mobile Menu" aria-expanded="false"
+                    class="md:hidden hover:text-[#89A37B] transition-colors">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="md:hidden w-full flex flex-col items-center gap-4 py-2 text-sm uppercase tracking-widest text-gray-600 bg-[#f8f7f4] border-t border-gray-100 mt-4 rounded-b-lg">
+            <a href="index.html"
+                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Home</a>
+            <a href="shop.html"
+                class="text-black font-semibold transition-colors w-full text-center py-2 active:bg-gray-100">Shop</a>
+            <a href="index.html#story"
+                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Story</a>
+        </div>
+    </nav>
+
+    <!-- Cart Drawer Setup -->
+    <div id="cart-overlay" onclick="toggleCart()"
+        class="fixed inset-0 bg-black/40 z-40 hidden opacity-0 transition-opacity"></div>
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 h-full w-full max-w-md bg-[#fcfbfa] z-50 shadow-2xl flex flex-col translate-x-full border-l border-gray-200">
+        <div class="p-6 border-b flex justify-between items-center bg-white">
+            <h2 class="text-2xl font-semibold brand-font">Your Cart</h2>
+            <button onclick="toggleCart()" aria-label="Close Cart"
+                class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4">
+            <!-- Rendered by cart.js -->
+        </div>
+        <div class="p-6 border-t bg-[#E7E7E7]">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-[#342525] font-medium">Subtotal</span>
+                <span id="cart-total" class="text-xl font-semibold brand-font text-[#342525]">R 0.00</span>
+            </div>
+            <p class="text-xs text-[#342525]/70 mb-6 text-center">Shipping & taxes calculated at checkout.</p>
+            <button onclick="checkoutToWhatsApp()"
+                class="w-full bg-[#89A37B] text-white py-4 rounded-md font-medium tracking-wide uppercase text-sm hover:translate-y-[-2px] hover:shadow-lg transition-all shadow-black/10">
+                Checkout via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Shop Header -->
+    <header class="py-16 bg-white border-b border-[#342525]/10 text-center">
+        <span class="text-sm tracking-widest uppercase text-[#89A37B] font-semibold mb-2 block">Our Products</span>
+        <h1 class="text-5xl md:text-6xl font-semibold text-[#342525] brand-font mb-4">The Complete Collection</h1>
+        <p class="text-lg text-[#342525]/80 max-w-2xl mx-auto px-6">Explore our full line of ethically sourced,
+            botanical
+            formulas crafted for daily skin health.</p>
+    </header>
+
+    <!-- Shop Layout -->
+    <section class="max-w-7xl mx-auto px-6 py-16 flex flex-col lg:flex-row gap-12">
+
+        <!-- Filters Sidebar -->
+        <aside class="w-full lg:w-64 flex-shrink-0 space-y-10">
+            <div>
+                <h3 class="font-semibold text-lg border-b pb-3 mb-4 uppercase tracking-wider text-sm">Categories</h3>
+                <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative w-5 h-5 flex-shrink-0">
+                            <input type="checkbox"
+                                class="filter-checkbox opacity-0 absolute inset-0 z-10 cursor-pointer" checked>
+                            <div
+                                class="w-5 h-5 border-2 border-gray-300 rounded bg-white flex items-center justify-center group-hover:border-[#322621] transition-colors">
+                                <svg class="check-icon w-3 h-3 text-[#322621]" fill="none" stroke="currentColor"
+                                    stroke-width="3" viewBox="0 0 24 24">
+                                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-gray-600 group-hover:text-black transition-colors">All Products</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative w-5 h-5 flex-shrink-0">
+                            <input type="checkbox"
+                                class="filter-checkbox opacity-0 absolute inset-0 z-10 cursor-pointer">
+                            <div
+                                class="w-5 h-5 border-2 border-gray-300 rounded bg-white flex items-center justify-center group-hover:border-[#322621] transition-colors">
+                                <svg class="check-icon w-3 h-3 text-[#322621]" fill="none" stroke="currentColor"
+                                    stroke-width="3" viewBox="0 0 24 24">
+                                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-gray-600 group-hover:text-black transition-colors">Body Creams</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative w-5 h-5 flex-shrink-0">
+                            <input type="checkbox"
+                                class="filter-checkbox opacity-0 absolute inset-0 z-10 cursor-pointer">
+                            <div
+                                class="w-5 h-5 border-2 border-gray-300 rounded bg-white flex items-center justify-center group-hover:border-[#322621] transition-colors">
+                                <svg class="check-icon w-3 h-3 text-[#322621]" fill="none" stroke="currentColor"
+                                    stroke-width="3" viewBox="0 0 24 24">
+                                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-gray-600 group-hover:text-black transition-colors">Oils & Serums</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative w-5 h-5 flex-shrink-0">
+                            <input type="checkbox"
+                                class="filter-checkbox opacity-0 absolute inset-0 z-10 cursor-pointer">
+                            <div
+                                class="w-5 h-5 border-2 border-gray-300 rounded bg-white flex items-center justify-center group-hover:border-[#322621] transition-colors">
+                                <svg class="check-icon w-3 h-3 text-[#322621]" fill="none" stroke="currentColor"
+                                    stroke-width="3" viewBox="0 0 24 24">
+                                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-gray-600 group-hover:text-black transition-colors">Soaps & Scrubs</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-semibold text-lg border-b pb-3 mb-4 uppercase tracking-wider text-sm">Sort By</h3>
+                <select
+                    class="w-full p-3 border border-gray-200 rounded text-gray-600 bg-white cursor-pointer focus:outline-none focus:ring-1 focus:ring-black">
+                    <option>Recommended</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest Arrivals</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <main class="flex-grow">
+            <!-- Active filters pill -->
+            <div class="mb-6 flex gap-2">
+                <span
+                    class="bg-white border border-gray-200 text-xs px-3 py-1 rounded-full text-gray-600 flex items-center gap-2">
+                    All Products
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1552046122-03184de85e08?auto=format&fit=crop&q=80&w=400"
+                            alt="Vannir-rave Cream"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Vannir-rave Cream', 110.00, 'https://images.unsplash.com/photo-1552046122-03184de85e08?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 110.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Vannir-rave Cream</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 110.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400"
+                            alt="Demond Deckharette"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Demond Deckharette', 250.00, 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 250.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Demond Deckharette</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 250.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400"
+                            alt="Boregenoa xxt"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Boregenoa xxt', 180.00, 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 180.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Boregenoa xxt</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 180.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=400"
+                            alt="Natural Poupes Cream"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Natural Poupes Cream', 220.00, 'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 220.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Natural Poupes Cream</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 220.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 5 (New) -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <!-- Placeholder using Unsplash -->
+                        <img src="https://images.unsplash.com/photo-1615397323114-6c39a3f295cd?auto=format&fit=crop&q=80&w=400"
+                            alt="Botanical Body Oil"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div
+                            class="absolute top-4 left-4 bg-[#322621] text-white text-xs px-2 py-1 rounded tracking-widest uppercase">
+                            Best Seller</div>
+                        <button
+                            onclick="addToCart('Botanical Body Oil', 195.00, 'https://images.unsplash.com/photo-1615397323114-6c39a3f295cd?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 195.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Botanical Body Oil</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 195.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 6 (New) -->
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=400"
+                            alt="Amber Face Elixir"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Amber Face Elixir', 280.00, 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg text-gray-900">
+                            Add to Cart - R 280.00
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Amber Face Elixir</h3>
+                        <p class="text-sm text-gray-500 mt-2 font-medium">R 280.00</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-center mt-16 gap-2">
+                <button
+                    class="w-10 h-10 rounded-full border border-gray-300 text-gray-500 hover:border-[#342525] hover:text-[#342525] flex items-center justify-center transition-colors">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <button
+                    class="w-10 h-10 rounded-full bg-[#342525] text-white flex items-center justify-center font-semibold">1</button>
+                <button
+                    class="w-10 h-10 rounded-full border border-gray-300 text-gray-600 hover:border-[#342525] hover:text-[#342525] flex items-center justify-center font-medium transition-colors">2</button>
+                <button
+                    class="w-10 h-10 rounded-full border border-gray-300 text-gray-500 hover:border-[#342525] hover:text-[#342525] flex items-center justify-center transition-colors">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </main>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#342525] text-[#E7E7E7] py-32 text-center relative overflow-hidden">
+        <div class="relative z-10 max-w-4xl mx-auto px-6">
+            <h2 class="text-6xl md:text-8xl font-semibold mb-6 brand-font leading-none">The Body Barn</h2>
+            <p class="text-2xl md:text-4xl tracking-[0.4em] font-light mb-8 opacity-80 uppercase brand-font">EXPERIENCE
+            </p>
+            <p class="text-[#89A37B] accent-font text-2xl mb-12">natural handcrafted bodycare</p>
+            <div class="flex justify-center gap-10 text-xs uppercase tracking-widest opacity-80">
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Instagram</a>
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Contact</a>
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let isMobileMenuOpen = false;
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const toggleBtn = document.querySelector('button[aria-label="Toggle Mobile Menu"]');
+
+            if (isMobileMenuOpen) {
+                menu.classList.add('open');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            } else {
+                menu.classList.remove('open');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        const scrollTopBtn = document.getElementById('scroll-top-btn');
+        window.onscroll = function () {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+    <script src="js/cart.js"></script>
+</body>
+
+</html>

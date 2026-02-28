@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Discover The Body Barn's natural handcrafted bodycare. Pure botanical goodness for your daily skin health. Small-batch essentials ethically sourced.">
+    <title>The Body Barn | Natural Handcrafted Bodycare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #342525;
+            --brand-secondary: #89A37B;
+            --brand-bg: #E7E7E7;
+            --brand-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--brand-primary);
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            /* Fallback for 'Dream Avenue' */
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .accent-font {
+            /* Fallback for 'Six Hands Marker' */
+            font-family: 'Caveat', cursive;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Floating Buttons Styling */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 40;
+        }
+
+        .fab-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #scroll-top-btn {
+            background-color: var(--brand-primary);
+            color: var(--brand-white);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .whatsapp-btn {
+            background-color: var(--brand-secondary);
+            color: var(--brand-white);
+        }
+
+        /* Cart Drawer */
+        #cart-drawer {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drawer-open #cart-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-closed #cart-drawer {
+            transform: translateX(100%);
+        }
+
+        #cart-overlay {
+            transition: opacity 0.4s ease;
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="antialiased drawer-closed">
+
+    <!-- Floating Actions -->
+    <div class="fab-container">
+        <a href="https://wa.me/yournumberhere" target="_blank" class="fab-btn whatsapp-btn"
+            aria-label="Chat on WhatsApp">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.435 5.63 1.435h.008c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+        </a>
+        <button id="scroll-top-btn" class="fab-btn" onclick="scrollToTop()" aria-label="Scroll to top">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path d="M5 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-30 bg-[#E7E7E7]/90 backdrop-blur-md border-b border-[#342525]/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-">
+            <div class="flex gap-8 items-center text-sm uppercase tracking-widest text-[#342525]/70 hidden md:flex">
+                <a href="index.html" class="hover:text-[#342525] font-medium transition-colors">Home</a>
+                <a href="shop.html" class="hover:text-[#342525] font-medium transition-colors">Shop</a>
+                <a href="index.html#story" class="hover:text-[#342525] font-medium transition-colors">Story</a>
+            </div>
+            <div class="flex justify-center items-center">
+                <img src="assets/logo.png" alt="The Body Barn Logo"
+                    class="h-14 object-contain">
+            </div>
+            <div class="flex items-center gap-6 text-[#342525]">
+                <button onclick="toggleCart()" aria-label="Toggle Cart Drawer"
+                    class="relative p-2 hover:bg-[#89A37B] hover:text-white rounded-full transition-colors">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                    <span id="cart-count"
+                        class="absolute top-0 right-0 bg-[#89A37B] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" aria-label="Toggle Mobile Menu" aria-expanded="false"
+                    class="md:hidden hover:text-[#89A37B] transition-colors">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="md:hidden w-full flex flex-col items-center gap-4 py-2 text-sm uppercase tracking-widest text-gray-600 bg-[#f8f7f4] border-t border-gray-100 mt-4 rounded-b-lg">
+            <a href="index.html"
+                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Home</a>
+            <a href="shop.html"
+                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Shop</a>
+            <a href="index.html#story"
+                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Story</a>
+        </div>
+    </nav>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" onclick="toggleCart()"
+        class="fixed inset-0 bg-black/40 z-40 hidden opacity-0 transition-opacity"></div>
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col translate-x-full">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-2xl font-semibold brand-font">Your Cart</h2>
+            <button onclick="toggleCart()" aria-label="Close Cart Header" class="p-2 hover:bg-gray-100 rounded-full">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+            <p class="text-gray-500 text-center py-10">Your cart is currently empty.</p>
+        </div>
+        <div class="p-6 border-t bg-[#E7E7E7]">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-[#342525] font-medium">Subtotal</span>
+                <span id="cart-total" class="text-xl font-semibold">R 0.00</span>
+            </div>
+            <button onclick="checkoutToWhatsApp()"
+                class="w-full bg-[#89A37B] text-white py-4 rounded-md font-medium hover:bg-[#342525] transition-colors">
+                Checkout via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Header / Logo Area -->
+    <header class="py-24 text-center bg-[#E7E7E7]">
+        <div class="flex justify-center mb-8">
+            <img src="assets/logo.png" alt="The Body Barn Logo"
+                class="h-24 md:h-32 object-contain">
+        </div>
+        <p class="text-3xl md:text-5xl text-[#89A37B] mt-6 accent-font tracking-wide">natural handcrafted bodycare</p>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center border-y border-[#342525]/10">
+            <div class="w-full md:w-1/2 relative h-[450px] md:h-[600px]">
+                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=1000"
+                    alt="Amber glass bottles" class="w-full h-full object-cover">
+                <div class="absolute bottom-12 -right-12 w-48 opacity-90 hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=200"
+                        alt="Leaf" class="rounded-full shadow-lg">
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 p-12 md:p-24 bg-white">
+                <h2 class="text-5xl md:text-6xl font-medium mb-8 leading-tight text-[#342525]">Handcrafted Bodycare...
+                </h2>
+                <p class="text-lg text-[#342525]/80 mb-10 max-w-md leading-relaxed">
+                    Connect with the 9 natural bodycare and complete beautility rituals for your daily skin health. Pure
+                    botanical goodness in every drop.
+                </p>
+                <a href="shop.html"
+                    class="inline-block bg-[#89A37B] text-white px-12 py-4 rounded-md hover:bg-[#342525] transition-all duration-300 font-medium tracking-wide uppercase text-sm">
+                    Shop Collection
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
+                <img src="https://images.unsplash.com/photo-1605298859543-e4ff5ecb25ec?auto=format&fit=crop&q=80&w=1000"
+                    alt="Story image" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h2 class="text-4xl md:text-5xl font-semibold mb-8 uppercase tracking-[0.2em] brand-font">OUR STORY</h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed text-lg">
+                    <p>
+                        The Body Barn began in 2022 with a simple belief: that natural skincare should be both effective
+                        and luxurious. Our journey started in a small barn, where we handcrafted each batch using only
+                        the finest botanical ingredients.
+                    </p>
+                    <p>
+                        We are passionate about creating products that are pure, simple, and real, free from harsh
+                        chemicals and full of nature's goodness. Every product is a testament to our dedication to your
+                        skin's well-being.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop / Featured Products Section -->
+    <section id="shop" class="py-24 bg-[#f0efec]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-semibold brand-font">The Collection</h2>
+                    <p class="text-gray-500 mt-2">Ethically sourced, small-batch essentials.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button class="px-6 py-2 bg-white rounded-full text-sm border hover:bg-gray-50">Filter</button>
+                    <button class="px-6 py-2 bg-white rounded-full text-sm border hover:bg-gray-50">Sort</button>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1552046122-03184de85e08?auto=format&fit=crop&q=80&w=400"
+                            alt="Vannir-rave"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Vannir-rave Cream', 110.00, 'https://images.unsplash.com/photo-1552046122-03184de85e08?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Vannir-rave Cream</h3>
+                        <p class="text-gray-500 font-sans mt-1">R 110.00</p>
+                    </div>
+                </div>
+
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400"
+                            alt="Demond Deckharette"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Demond Deckharette', 250.00, 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Demond Deckharette</h3>
+                        <p class="text-gray-500 font-sans mt-1">R 250.00</p>
+                    </div>
+                </div>
+
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400"
+                            alt="Boregenoa xxt"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Boregenoa xxt', 180.00, 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Boregenoa xxt</h3>
+                        <p class="text-gray-500 font-sans mt-1">R 180.00</p>
+                    </div>
+                </div>
+
+                <div class="product-card bg-white rounded-xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=400"
+                            alt="Natural Poupes"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button
+                            onclick="addToCart('Natural Poupes Cream', 220.00, 'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=400')"
+                            class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur py-3 rounded text-sm font-semibold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-medium text-gray-900 brand-font">Natural Poupes Cream</h3>
+                        <p class="text-gray-500 font-sans mt-1">R 220.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 text-center">
+                <a href="shop.html"
+                    class="inline-block border-b-2 border-[#342525] pb-1 font-semibold tracking-widest uppercase text-sm text-[#342525] hover:text-[#89A37B] hover:border-[#89A37B] transition-colors">View
+                    All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#342525] text-[#E7E7E7] py-32 text-center relative overflow-hidden">
+        <div class="relative z-10 max-w-4xl mx-auto px-6">
+            <h2 class="text-6xl md:text-8xl font-semibold mb-6 brand-font leading-none">The Body Barn</h2>
+            <p class="text-2xl md:text-4xl tracking-[0.4em] font-light mb-8 opacity-80 uppercase brand-font">EXPERIENCE
+            </p>
+            <p class="text-[#89A37B] accent-font text-2xl mb-12">natural handcrafted bodycare</p>
+            <div class="flex justify-center gap-10 text-xs uppercase tracking-widest opacity-80">
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Instagram</a>
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Contact</a>
+                <a href="#" class="hover:text-[#89A37B] transition-colors">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Navigation Functions ---
+        let isMobileMenuOpen = false;
+
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const toggleBtn = document.querySelector('button[aria-label="Toggle Mobile Menu"]');
+
+            if (isMobileMenuOpen) {
+                menu.classList.add('open');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            } else {
+                menu.classList.remove('open');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMobileMenuOpen) toggleMobileMenu();
+            });
+        });
+
+        // --- UI Interactions ---
+        const scrollTopBtn = document.getElementById('scroll-top-btn');
+        window.onscroll = function () {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+    <script src="js/cart.js"></script>
+
+</body>
+
+</html>
