@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('toast-container')) {
         const toastContainer = document.createElement('div');
         toastContainer.id = 'toast-container';
-        toastContainer.className = 'fixed bottom-24 right-6 z-50 flex flex-col gap-3 pointer-events-none';
+        toastContainer.className = 'fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-96 z-50 flex flex-col gap-3 pointer-events-none';
         document.body.appendChild(toastContainer);
     }
     updateCartUI();
