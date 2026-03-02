@@ -135,7 +135,8 @@ function showToast(message) {
         <p class="text-sm font-medium pr-4">${message}</p>
     `;
 
-    container.appendChild(toast);
+    // Prepend to stack new toasts on top
+    container.prepend(toast);
 
     // Animate in
     setTimeout(() => {

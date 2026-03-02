@@ -5,7 +5,7 @@ const products = [
         name: 'Vannir-rave Cream',
         price: 110.00,
         category: 'Body Creams',
-        image: 'https://images.unsplash.com/photo-1552046122-03184de85e08?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/vannir-rave.jpg',
         badge: null,
         dateAdded: '2023-01-01'
     },
@@ -14,7 +14,7 @@ const products = [
         name: 'Demond Deckharette',
         price: 250.00,
         category: 'Body Creams',
-        image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/demond-deckharette.jpg',
         badge: null,
         dateAdded: '2023-02-15'
     },
@@ -23,7 +23,7 @@ const products = [
         name: 'Boregenoa xxt',
         price: 180.00,
         category: 'Oils & Serums',
-        image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/boregenoa-xxt.jpg',
         badge: null,
         dateAdded: '2023-03-10'
     },
@@ -32,7 +32,7 @@ const products = [
         name: 'Natural Poupes Cream',
         price: 220.00,
         category: 'Body Creams',
-        image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/natural-poupes.jpg',
         badge: null,
         dateAdded: '2023-04-05'
     },
@@ -41,7 +41,7 @@ const products = [
         name: 'Botanical Body Oil',
         price: 195.00,
         category: 'Oils & Serums',
-        image: 'https://images.unsplash.com/photo-1615397323114-6c39a3f295cd?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/botanical-body.jpg',
         badge: 'Best Seller',
         dateAdded: '2023-05-20'
     },
@@ -50,7 +50,7 @@ const products = [
         name: 'Amber Face Elixir',
         price: 280.00,
         category: 'Oils & Serums',
-        image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/amber-face.jpg',
         badge: null,
         dateAdded: '2023-06-12'
     },
@@ -59,7 +59,7 @@ const products = [
         name: 'Charcoal Detox Soap',
         price: 85.00,
         category: 'Soaps & Scrubs',
-        image: 'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/charcoal-detox.jpg',
         badge: 'New',
         dateAdded: '2023-07-01'
     },
@@ -68,7 +68,7 @@ const products = [
         name: 'Himalayan Salt Scrub',
         price: 150.00,
         category: 'Soaps & Scrubs',
-        image: 'https://images.unsplash.com/photo-1599305142168-cf1c944122cc?auto=format&fit=crop&q=80&w=400',
+        image: 'assets/products/himalayan-salt.jpg',
         badge: null,
         dateAdded: '2023-06-25'
     }
@@ -77,12 +77,14 @@ const products = [
 // State Management
 let selectedCategories = ['All Products'];
 let currentSort = 'Recommended';
+let searchQuery = '';
 
 // DOM Elements
 const productGrid = document.getElementById('product-grid');
 const filterContainer = document.getElementById('active-filters');
 const categoryCheckboxes = document.querySelectorAll('.category-filter');
 const sortDropdown = document.getElementById('sort-dropdown');
+const searchInput = document.getElementById('product-search');
 
 // Initialize Shop
 document.addEventListener('DOMContentLoaded', () => {
@@ -137,13 +139,22 @@ function bindEventListeners() {
             renderShop();
         });
     }
+
+    // Search
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderShop();
+        });
+    }
 }
 
 function renderShop() {
     // 1. Filter Products
     let filteredProducts = products.filter(product => {
-        if (selectedCategories.includes('All Products')) return true;
-        return selectedCategories.includes(product.category);
+        const matchesCategory = selectedCategories.includes('All Products') ? true : selectedCategories.includes(product.category);
+        const matchesSearch = searchQuery === '' ? true : product.name.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
     });
 
     // 2. Sort Products
@@ -236,5 +247,7 @@ window.resetFilters = function () {
     categoryCheckboxes.forEach(cb => {
         cb.checked = (cb.value === 'All Products');
     });
+    searchQuery = '';
+    if (searchInput) searchInput.value = '';
     renderShop();
 };

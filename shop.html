@@ -106,16 +106,35 @@
             transition: opacity 0.4s ease;
         }
 
+        /* Premium Mobile Menu Overlay */
         #mobile-menu {
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(248, 247, 244, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
             opacity: 0;
-            overflow: hidden;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-20px);
         }
 
         #mobile-menu.open {
-            max-height: 300px;
             opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        body.menu-open {
+            overflow: hidden;
         }
 
         /* Filter styling */
@@ -175,17 +194,23 @@
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="md:hidden w-full flex flex-col items-center gap-4 py-2 text-sm uppercase tracking-widest text-gray-600 bg-[#f8f7f4] border-t border-gray-100 mt-4 rounded-b-lg">
-            <a href="index.html"
-                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Home</a>
-            <a href="shop.html"
-                class="text-black font-semibold transition-colors w-full text-center py-2 active:bg-gray-100">Shop</a>
-            <a href="index.html#story"
-                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Story</a>
-        </div>
     </nav>
+
+    <!-- Premium Mobile Menu Overlay -->
+    <div id="mobile-menu" class="md:hidden">
+        <button onclick="toggleMobileMenu()" aria-label="Close Mobile Menu"
+            class="absolute top-6 right-6 p-2 text-[#342525] hover:bg-black/5 rounded-full transition-colors">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </button>
+        <img src="assets/logo.png" alt="The Body Barn" class="h-24 object-contain mb-8">
+        <a href="index.html" class="text-3xl brand-font text-gray-600 hover:text-[#89A37B] transition-colors">Home</a>
+        <a href="shop.html"
+            class="text-3xl brand-font text-black font-semibold hover:text-[#89A37B] transition-colors">Shop</a>
+        <a href="index.html#story" class="text-3xl brand-font text-gray-600 hover:text-[#89A37B] transition-colors">Our
+            Story</a>
+    </div>
 
     <!-- Cart Drawer Setup -->
     <div id="cart-overlay" onclick="toggleCart()"
@@ -233,6 +258,20 @@
 
         <!-- Filters Sidebar -->
         <aside class="w-full lg:w-64 flex-shrink-0 space-y-10">
+            <!-- Search -->
+            <div>
+                <h3 class="font-semibold text-lg border-b pb-3 mb-4 uppercase tracking-wider text-sm">Search</h3>
+                <div class="relative">
+                    <input type="search" id="product-search" placeholder="Search products..."
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded text-gray-700 focus:outline-none focus:border-[#89A37B] focus:ring-1 focus:ring-[#89A37B] transition-colors" />
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                        fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
             <div>
                 <h3 class="font-semibold text-lg border-b pb-3 mb-4 uppercase tracking-wider text-sm">Categories</h3>
                 <div class="space-y-3">
@@ -346,10 +385,12 @@
 
             if (isMobileMenuOpen) {
                 menu.classList.add('open');
-                toggleBtn.setAttribute('aria-expanded', 'true');
+                document.body.classList.add('menu-open');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
             } else {
                 menu.classList.remove('open');
-                toggleBtn.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('menu-open');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
             }
         }
 

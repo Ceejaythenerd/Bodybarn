@@ -8,6 +8,7 @@
         content="Discover The Body Barn's natural handcrafted bodycare. Pure botanical goodness for your daily skin health. Small-batch essentials ethically sourced.">
     <title>The Body Barn | Natural Handcrafted Bodycare</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap"
         rel="stylesheet">
@@ -109,16 +110,51 @@
             transition: opacity 0.4s ease;
         }
 
-        /* Mobile Menu */
+        /* Premium Mobile Menu Overlay */
         #mobile-menu {
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(248, 247, 244, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
             opacity: 0;
-            overflow: hidden;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-20px);
         }
 
         #mobile-menu.open {
-            max-height: 300px;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Story Carousel Swiper overrides */
+        .storySwiper .swiper-pagination-bullet {
+            background: var(--brand-white);
+            opacity: 0.5;
+            width: 10px;
+            height: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .storySwiper .swiper-pagination-bullet:hover {
+            opacity: 0.8;
+        }
+
+        .storySwiper .swiper-pagination-bullet-active {
             opacity: 1;
         }
     </style>
@@ -151,8 +187,7 @@
                 <a href="index.html#story" class="hover:text-[#342525] font-medium transition-colors">Story</a>
             </div>
             <div class="flex justify-center items-center">
-                <img src="assets/logo.png" alt="The Body Barn Logo"
-                    class="h-14 object-contain">
+                <img src="assets/logo.png" alt="The Body Barn Logo" class="h-14 object-contain">
             </div>
             <div class="flex items-center gap-6 text-[#342525]">
                 <button onclick="toggleCart()" aria-label="Toggle Cart Drawer"
@@ -173,17 +208,23 @@
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="md:hidden w-full flex flex-col items-center gap-4 py-2 text-sm uppercase tracking-widest text-gray-600 bg-[#f8f7f4] border-t border-gray-100 mt-4 rounded-b-lg">
-            <a href="index.html"
-                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Home</a>
-            <a href="shop.html"
-                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Shop</a>
-            <a href="index.html#story"
-                class="hover:text-black transition-colors w-full text-center py-2 active:bg-gray-100">Story</a>
-        </div>
     </nav>
+
+    <!-- Premium Mobile Menu Overlay -->
+    <div id="mobile-menu" class="md:hidden">
+        <button onclick="toggleMobileMenu()" aria-label="Close Mobile Menu"
+            class="absolute top-6 right-6 p-2 text-[#342525] hover:bg-black/5 rounded-full transition-colors">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </button>
+        <img src="assets/logo.png" alt="The Body Barn" class="h-24 object-contain mb-8">
+        <a href="index.html"
+            class="text-3xl brand-font text-black font-semibold hover:text-[#89A37B] transition-colors">Home</a>
+        <a href="shop.html" class="text-3xl brand-font text-gray-600 hover:text-[#89A37B] transition-colors">Shop</a>
+        <a href="index.html#story" class="text-3xl brand-font text-gray-600 hover:text-[#89A37B] transition-colors">Our
+            Story</a>
+    </div>
 
     <!-- Cart Drawer -->
     <div id="cart-overlay" onclick="toggleCart()"
@@ -216,8 +257,7 @@
     <!-- Header / Logo Area -->
     <header class="py-16 md:py-24 text-center bg-[#E7E7E7]">
         <div class="flex justify-center mb-8">
-            <img src="assets/logo.png" alt="The Body Barn Logo"
-                class="h-24 md:h-32 object-contain">
+            <img src="assets/logo.png" alt="The Body Barn Logo" class="h-24 md:h-32 object-contain">
         </div>
         <p class="text-3xl md:text-5xl text-[#89A37B] mt-6 accent-font tracking-wide">natural handcrafted bodycare</p>
     </header>
@@ -226,15 +266,14 @@
     <section class="bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center border-y border-[#342525]/10">
             <div class="w-full md:w-1/2 relative h-[450px] md:h-[600px]">
-                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=1000"
-                    alt="Amber glass bottles" class="w-full h-full object-cover">
+                <img src="assets/hero-bottles.jpg" alt="Amber glass bottles" class="w-full h-full object-cover">
                 <div class="absolute bottom-12 -right-12 w-48 opacity-90 hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=200"
-                        alt="Leaf" class="rounded-full shadow-lg">
+                    <img src="assets/hero-leaf.jpg" alt="Leaf" class="rounded-full shadow-lg">
                 </div>
             </div>
             <div class="w-full md:w-1/2 p-8 md:p-24 bg-white">
-                <h2 class="text-4xl md:text-6xl font-medium mb-6 md:mb-8 leading-tight text-[#342525]">Handcrafted Bodycare...
+                <h2 class="text-4xl md:text-6xl font-medium mb-6 md:mb-8 leading-tight text-[#342525]">Handcrafted
+                    Bodycare...
                 </h2>
                 <p class="text-lg text-[#342525]/80 mb-10 max-w-md leading-relaxed">
                     Connect with the 9 natural bodycare and complete beautility rituals for your daily skin health. Pure
@@ -251,9 +290,43 @@
     <!-- Our Story Section -->
     <section id="story" class="py-16 md:py-24 px-6 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
-                <img src="https://images.unsplash.com/photo-1605298859543-e4ff5ecb25ec?auto=format&fit=crop&q=80&w=1000"
-                    alt="Story image" class="w-full h-full object-cover">
+            <div
+                class="rounded-2xl overflow-hidden shadow-xl w-full h-[400px] lg:h-[600px] relative group swiper storySwiper">
+                <div class="swiper-wrapper w-full h-full">
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/1.png"
+                            alt="Story image 1" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/2.png"
+                            alt="Story image 2" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/3.png"
+                            alt="Story image 3" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/4.png"
+                            alt="Story image 4" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/5.png"
+                            alt="Story image 5" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/6.png"
+                            alt="Story image 6" class="w-full h-full object-cover"></div>
+                    <div class="swiper-slide cursor-grab active:cursor-grabbing"><img src="assets/7.png"
+                            alt="Story image 7" class="w-full h-full object-cover"></div>
+                </div>
+
+                <!-- Navigation -->
+                <button
+                    class="swiper-button-prev !bg-white/50 hover:!bg-white/80 !text-[#342525] !w-10 !h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm !left-4 after:!hidden z-20"
+                    aria-label="Previous image">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <button
+                    class="swiper-button-next !bg-white/50 hover:!bg-white/80 !text-[#342525] !w-10 !h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm !right-4 after:!hidden z-20"
+                    aria-label="Next image">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+
+                <!-- Indicators -->
+                <div class="swiper-pagination !bottom-4 z-20"></div>
             </div>
             <div>
                 <h2 class="text-4xl md:text-5xl font-semibold mb-8 uppercase tracking-[0.2em] brand-font">OUR STORY</h2>
@@ -372,7 +445,8 @@
             <p class="text-2xl md:text-4xl tracking-[0.4em] font-light mb-8 opacity-80 uppercase brand-font">EXPERIENCE
             </p>
             <p class="text-[#89A37B] accent-font text-2xl md:text-3xl mb-12">natural handcrafted bodycare</p>
-            <div class="flex flex-wrap justify-center gap-6 md:gap-10 text-xs w-full uppercase tracking-widest opacity-80">
+            <div
+                class="flex flex-wrap justify-center gap-6 md:gap-10 text-xs w-full uppercase tracking-widest opacity-80">
                 <a href="#" class="hover:text-[#89A37B] transition-colors">Instagram</a>
                 <a href="#" class="hover:text-[#89A37B] transition-colors">Contact</a>
                 <a href="#" class="hover:text-[#89A37B] transition-colors">Privacy</a>
@@ -380,6 +454,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         // --- Navigation Functions ---
         let isMobileMenuOpen = false;
@@ -391,10 +466,12 @@
 
             if (isMobileMenuOpen) {
                 menu.classList.add('open');
-                toggleBtn.setAttribute('aria-expanded', 'true');
+                document.body.classList.add('menu-open');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
             } else {
                 menu.classList.remove('open');
-                toggleBtn.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('menu-open');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
             }
         }
 
@@ -418,6 +495,30 @@
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // --- Story Carousel Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const storySwiper = new Swiper('.storySwiper', {
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
+                },
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                grabCursor: true,
+            });
+        });
     </script>
     <script src="js/cart.js"></script>
 
