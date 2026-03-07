@@ -2,30 +2,30 @@
 const products = [
     {
         id: 1,
-        name: 'Vannir-rave Cream',
-        price: 110.00,
-        category: 'Body Creams',
-        image: 'assets/products/vannir-rave.jpg',
-        badge: null,
-        dateAdded: '2023-01-01'
+        name: 'Hair Butter',
+        price: 150.00,
+        category: 'Hair Care',
+        image: 'assets/products/Hair Butter.png',
+        badge: 'Best Seller',
+        dateAdded: '2024-01-10'
     },
     {
         id: 2,
-        name: 'Demond Deckharette',
-        price: 250.00,
-        category: 'Body Creams',
-        image: 'assets/products/demond-deckharette.jpg',
+        name: 'Hair Oil',
+        price: 195.00,
+        category: 'Hair Care',
+        image: 'assets/products/Hair Oil.png',
         badge: null,
-        dateAdded: '2023-02-15'
+        dateAdded: '2024-02-05'
     },
     {
         id: 3,
-        name: 'Boregenoa xxt',
-        price: 180.00,
-        category: 'Oils & Serums',
-        image: 'assets/products/boregenoa-xxt.jpg',
-        badge: null,
-        dateAdded: '2023-03-10'
+        name: 'Hair Tonic',
+        price: 175.00,
+        category: 'Hair Care',
+        image: 'assets/products/Hair Tonic.png',
+        badge: 'New',
+        dateAdded: '2024-03-01'
     },
     {
         id: 4,
@@ -35,42 +35,6 @@ const products = [
         image: 'assets/products/natural-poupes.jpg',
         badge: null,
         dateAdded: '2023-04-05'
-    },
-    {
-        id: 5,
-        name: 'Botanical Body Oil',
-        price: 195.00,
-        category: 'Oils & Serums',
-        image: 'assets/products/botanical-body.jpg',
-        badge: 'Best Seller',
-        dateAdded: '2023-05-20'
-    },
-    {
-        id: 6,
-        name: 'Amber Face Elixir',
-        price: 280.00,
-        category: 'Oils & Serums',
-        image: 'assets/products/amber-face.jpg',
-        badge: null,
-        dateAdded: '2023-06-12'
-    },
-    {
-        id: 7,
-        name: 'Charcoal Detox Soap',
-        price: 85.00,
-        category: 'Soaps & Scrubs',
-        image: 'assets/products/charcoal-detox.jpg',
-        badge: 'New',
-        dateAdded: '2023-07-01'
-    },
-    {
-        id: 8,
-        name: 'Himalayan Salt Scrub',
-        price: 150.00,
-        category: 'Soaps & Scrubs',
-        image: 'assets/products/himalayan-salt.jpg',
-        badge: null,
-        dateAdded: '2023-06-25'
     }
 ];
 
