@@ -157,7 +157,7 @@ function checkoutToWhatsApp() {
         return;
     }
 
-    const phoneNumber = "yournumberhere"; // Replace with actual business WhatsApp number
+    const phoneNumber = "27646849684"; // Replace with actual business WhatsApp number
     let message = "*New Order from The Body Barn* 🌿\n\n";
 
     cart.forEach(item => {
